@@ -62,8 +62,15 @@ const ChatHome: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center h-[90vh] items-center  bg-white">
-      <div className="w-full max-w-md h-full bg-white shadow-lg rounded-lg overflow-hidden flex flex-col">
+    <div className="flex justify-center h-[90vh] items-center bg-white relative">
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <img
+          src="/kw.svg"
+          alt="광운대학교 로고"
+          className="w-64 h-64 opacity-5"
+        />
+      </div>
+      <div className="w-full max-w-md h-full bg-white shadow-lg rounded-lg overflow-hidden flex flex-col relative z-10">
         {/* 헤더 */}
         <header className="bg-[#800020] text-white p-4">
           <div className="flex justify-between items-center">
@@ -82,45 +89,54 @@ const ChatHome: React.FC = () => {
         </header>
 
         {/* 메시지 영역 */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
-          {messages.map((message) => (
-            <div
-              key={message.id}
-              className={`flex ${
-                message.role === "user" ? "justify-end" : "justify-start"
-              } ${message.id > lastMessageId - 2 ? "message-animation" : ""}`}
-            >
-              <div className="flex items-end gap-1">
-                {message.role === "user" && (
-                  <span className="text-xs text-gray-500 mb-1">
-                    {message.timestamp.toLocaleTimeString("ko-KR", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      hour12: true,
-                    })}
-                  </span>
-                )}
-                <div
-                  className={`max-w-[80%] rounded-2xl p-3 ${
-                    message.role === "user"
-                      ? "bg-[#800020] text-white rounded-tr-none"
-                      : "bg-white border border-gray-200 rounded-tl-none text-gray-800"
-                  }`}
-                >
-                  {message.content}
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50 relative">
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <img
+              src="/kw.svg"
+              alt="광운대학교 로고"
+              className="w-48 h-48 opacity-5"
+            />
+          </div>
+          <div className="relative z-10">
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={`flex ${
+                  message.role === "user" ? "justify-end" : "justify-start"
+                } ${message.id > lastMessageId - 2 ? "message-animation" : ""}`}
+              >
+                <div className="flex items-end gap-1">
+                  {message.role === "user" && (
+                    <span className="text-xs text-gray-500 mb-1">
+                      {message.timestamp.toLocaleTimeString("ko-KR", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: true,
+                      })}
+                    </span>
+                  )}
+                  <div
+                    className={`max-w-[80%] rounded-2xl p-3 ${
+                      message.role === "user"
+                        ? "bg-[#800020] text-white rounded-tr-none"
+                        : "bg-white border border-gray-200 rounded-tl-none text-gray-800"
+                    }`}
+                  >
+                    {message.content}
+                  </div>
+                  {message.role === "assistant" && (
+                    <span className="text-xs text-gray-500 mb-1">
+                      {message.timestamp.toLocaleTimeString("ko-KR", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: true,
+                      })}
+                    </span>
+                  )}
                 </div>
-                {message.role === "assistant" && (
-                  <span className="text-xs text-gray-500 mb-1">
-                    {message.timestamp.toLocaleTimeString("ko-KR", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      hour12: true,
-                    })}
-                  </span>
-                )}
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
           <div ref={messagesEndRef} />
         </div>
 
