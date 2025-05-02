@@ -90,7 +90,7 @@ const ChatHome: React.FC = () => {
 
         {/* 메시지 영역 */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50 relative">
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none">
             <img
               src="/kw.svg"
               alt="광운대학교 로고"
@@ -118,8 +118,8 @@ const ChatHome: React.FC = () => {
                   <div
                     className={`max-w-[80%] rounded-2xl p-3 ${
                       message.role === "user"
-                        ? "bg-[#800020] text-white rounded-tr-none"
-                        : "bg-white border border-gray-200 rounded-tl-none text-gray-800"
+                        ? "bg-[#800020] text-white rounded-tr-none my-1"
+                        : "bg-white border border-gray-200 rounded-tl-none text-gray-800 my-1"
                     }`}
                   >
                     {message.content}
