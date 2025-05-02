@@ -62,8 +62,8 @@ const ChatHome: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-white">
-      <div className="w-full max-w-md h-[90vh] bg-white shadow-lg rounded-lg overflow-hidden flex flex-col">
+    <div className="flex justify-center h-[90vh] items-center  bg-white">
+      <div className="w-full max-w-md h-full bg-white shadow-lg rounded-lg overflow-hidden flex flex-col">
         {/* 헤더 */}
         <header className="bg-[#800020] text-white p-4">
           <div className="flex justify-between items-center">
