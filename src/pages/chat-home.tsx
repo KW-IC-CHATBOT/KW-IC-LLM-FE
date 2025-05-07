@@ -45,7 +45,6 @@ const ChatHome: React.FC = () => {
     setInput("");
     setLastMessageId(newId);
 
-    // TODO: API 연동 후 실제 응답 구현
     setTimeout(() => {
       const assistantId = newId + 1;
       setMessages((prev) => [
@@ -67,21 +66,21 @@ const ChatHome: React.FC = () => {
         <img
           src="/kw.svg"
           alt="광운대학교 로고"
-          className="w-64 h-64 opacity-5"
+          className="w-24 h-24 sm:w-32 sm:h-32 md:w-48 md:h-48 opacity-5"
         />
       </div>
-      <div className="w-full max-w-md h-full bg-white shadow-lg rounded-lg overflow-hidden flex flex-col relative z-10">
+      <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl h-full bg-white shadow-lg rounded-lg overflow-hidden flex flex-col relative z-10">
         {/* 헤더 */}
         <header className="bg-[#800020] text-white p-4">
           <div className="flex justify-between items-center">
-            <h1 className="text-lg font-semibold">
+            <h1 className="text-base sm:text-lg md:text-xl font-semibold">
               광운대학교 정보융합학부 챗봇
             </h1>
             <a
               href="https://ic.kw.ac.kr:501/main/main.php"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[15px] bg-white text-[#800020] px-3 py-2 rounded hover:bg-gray-100 transition-colors"
+              className="text-xs sm:text-sm md:text-base bg-white text-[#800020] px-2 sm:px-3 py-1.5 sm:py-2 rounded hover:bg-gray-100 transition-colors"
             >
               IC
             </a>
@@ -94,7 +93,7 @@ const ChatHome: React.FC = () => {
             <img
               src="/kw.svg"
               alt="광운대학교 로고"
-              className="w-48 h-48 opacity-5"
+              className="w-20 h-20 sm:w-32 sm:h-32 md:w-48 md:h-48 opacity-5"
             />
           </div>
           <div className="relative z-10">
@@ -151,15 +150,15 @@ const ChatHome: React.FC = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="메시지를 입력하세요..."
-              className="flex-1 p-3 border border-gray-300 rounded-full focus:outline-none focus:border-[#800020] text-gray-800 placeholder-gray-500"
+              className="flex-1 p-2 sm:p-3 border border-gray-300 rounded-full focus:outline-none focus:border-[#800020] text-gray-800 placeholder-gray-500"
             />
             <button
               type="submit"
-              className="w-12 h-12 bg-[#800020] text-white rounded-full hover:bg-[#600018] focus:outline-none flex items-center justify-center"
+              className="w-10 h-10 sm:w-12 sm:h-12 bg-[#800020] text-white rounded-full hover:bg-[#600018] focus:outline-none flex items-center justify-center"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
+                className="h-5 w-5 sm:h-6 sm:w-6"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
