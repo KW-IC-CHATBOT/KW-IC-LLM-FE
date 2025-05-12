@@ -97,7 +97,7 @@ const ChatHome: React.FC = () => {
         <Header />
 
         {/* 메시지 영역 */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50 relative">
+        <div className="flex-1 overflow-y-auto p-4 pb-24 space-y-4 bg-gray-50 relative">
           <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none">
             <img
               src="/kw.svg"

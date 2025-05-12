@@ -59,10 +59,18 @@
 @layer base {
   html {
     -webkit-tap-highlight-color: transparent;
+    height: 100%;
+    position: fixed;
+    width: 100%;
+    overflow: hidden;
   }
 
   body {
     @apply min-h-screen w-full overflow-x-hidden;
+    height: 100%;
+    position: fixed;
+    width: 100%;
+    overflow: hidden;
   }
 }
 
