@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import ChatMessage from "../components/ChatMessage";
 import MessageSkeleton from "../components/MessageSkeleton";
 import ChatInput from "../components/ChatInput";
+import { clarity } from "react-microsoft-clarity";
 
 interface Message {
   role: "user" | "assistant";
@@ -50,6 +51,10 @@ const ChatHome: React.FC = () => {
       e.type === "submit" ? input : (e as any).target?.value;
     if (!messageContent?.trim() || isLoading) return;
 
+    // 사용자 메시지 전송 이벤트 추적
+    clarity.setEvent("user_message_sent");
+    clarity.setTag("message_length", messageContent.length.toString());
+
     const userMessageId = generateMessageId();
     const newMessage: Message = {
       role: "user",
@@ -94,10 +99,16 @@ const ChatHome: React.FC = () => {
             : msg
         )
       );
+      // 챗봇 응답 이벤트 추적
+      clarity.setEvent("bot_response_received");
     }, 2000);
   };
 
   const handleSuggestedQuestionClick = (question: string) => {
+    // 추천 질문 클릭 이벤트 추적
+    clarity.setEvent("suggested_question_clicked");
+    clarity.setTag("question", question);
+
     const formEvent = {
       preventDefault: () => {},
       type: "suggested",
