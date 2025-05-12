@@ -21,7 +21,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
           value={input}
           onChange={onInputChange}
           placeholder="메시지를 입력하세요..."
-          className="flex-1 p-2 sm:p-3 border border-gray-300 rounded-full focus:outline-none focus:border-[#800020] text-gray-800 placeholder-gray-500"
+          className="flex-1 p-2 sm:p-3 border border-gray-300 rounded-full focus:outline-none focus:border-[#800020] text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 bg-white dark:bg-gray-800"
           disabled={isLoading}
         />
         <button

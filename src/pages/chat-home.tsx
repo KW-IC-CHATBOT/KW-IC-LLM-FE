@@ -85,7 +85,7 @@ const ChatHome: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center h-[100vh] items-center bg-white relative">
+    <div className="flex justify-center h-[100dvh] items-center bg-white relative">
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <img
           src="/kw.svg"
