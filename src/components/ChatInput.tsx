@@ -16,7 +16,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
   return (
     <form
       onSubmit={onSubmit}
-      className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl border-t border-gray-200 p-4 bg-white dark:bg-gray-900"
+      className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl border-t border-gray-200 p-4 bg-white z-50"
     >
       <div className="flex space-x-2">
         <input
@@ -24,7 +24,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
           value={input}
           onChange={onInputChange}
           placeholder="메시지를 입력하세요..."
-          className="flex-1 p-2 sm:p-3 border border-gray-300 rounded-full focus:outline-none focus:border-[#800020] text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 bg-white dark:bg-gray-800"
+          className="flex-1 p-2 sm:p-3 border border-gray-300 rounded-full focus:outline-none focus:border-[#800020] text-gray-800 placeholder-gray-500 bg-white"
           disabled={isLoading}
         />
         <button
