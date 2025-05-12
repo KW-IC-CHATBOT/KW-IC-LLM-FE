@@ -4,7 +4,7 @@ interface ChatMessageProps {
   role: "user" | "assistant";
   content: string;
   timestamp: Date;
-  id: number;
+  id: string;
   isNew?: boolean;
 }
 

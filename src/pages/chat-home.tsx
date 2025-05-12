@@ -8,7 +8,7 @@ interface Message {
   role: "user" | "assistant";
   content: string;
   timestamp: Date;
-  id: number;
+  id: string;
   isLoading?: boolean;
 }
 
@@ -19,12 +19,11 @@ const ChatHome: React.FC = () => {
       content:
         "안녕하세요! 광운대학교 정보융합학부 챗봇입니다. 무엇을 도와드릴까요?",
       timestamp: new Date(),
-      id: 0,
+      id: "initial",
     },
   ]);
   const [input, setInput] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [lastMessageId, setLastMessageId] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
   const scrollToBottom = () => {
@@ -35,25 +34,28 @@ const ChatHome: React.FC = () => {
     scrollToBottom();
   }, [messages]);
 
+  const generateMessageId = () => {
+    return `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
 
-    const newId = lastMessageId + 1;
+    const userMessageId = generateMessageId();
     const newMessage: Message = {
       role: "user",
       content: input,
       timestamp: new Date(),
-      id: newId,
+      id: userMessageId,
     };
 
     setMessages((prev) => [...prev, newMessage]);
     setInput("");
-    setLastMessageId(newId);
     setIsLoading(true);
 
     // 스켈레톤 메시지 추가
-    const skeletonId = newId + 1;
+    const skeletonId = generateMessageId();
     setMessages((prev) => [
       ...prev,
       {
@@ -114,7 +116,7 @@ const ChatHome: React.FC = () => {
                   content={message.content}
                   timestamp={message.timestamp}
                   id={message.id}
-                  isNew={message.id > lastMessageId - 2}
+                  isNew={message.id.includes("_")}
                 />
               )
             )}
