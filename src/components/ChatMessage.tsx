@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 interface ChatMessageProps {
   role: "user" | "assistant";
@@ -18,6 +18,16 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
   suggestedQuestions = [],
   onSuggestedQuestionClick,
 }) => {
+  const [isFadingOut, setIsFadingOut] = useState(false);
+
+  const handleQuestionClick = (question: string) => {
+    setIsFadingOut(true);
+    // 애니메이션이 완료된 후 콜백 실행
+    setTimeout(() => {
+      onSuggestedQuestionClick?.(question);
+    }, 300); // 애니메이션 지속 시간과 동일하게 설정
+  };
+
   return (
     <div
       className={`flex flex-col ${
@@ -53,13 +63,28 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
           </span>
         )}
       </div>
-      {role === "assistant" && suggestedQuestions.length > 0 && (
-        <div className="mt-2 flex flex-wrap gap-2 max-w-[80%]">
+      {role === "assistant" &&
+        suggestedQuestions.length > 0 &&
+        !isFadingOut && (
+          <div className="mt-2 flex flex-wrap gap-2 max-w-[80%]">
+            {suggestedQuestions.map((question, index) => (
+              <button
+                key={index}
+                onClick={() => handleQuestionClick(question)}
+                className="text-sm px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors"
+              >
+                {question}
+              </button>
+            ))}
+          </div>
+        )}
+      {role === "assistant" && isFadingOut && (
+        <div className="mt-2 flex flex-wrap gap-2 max-w-[80%] suggested-questions-fade-out">
           {suggestedQuestions.map((question, index) => (
             <button
               key={index}
-              onClick={() => onSuggestedQuestionClick?.(question)}
-              className="text-sm px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors"
+              className="text-sm px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full"
+              disabled
             >
               {question}
             </button>

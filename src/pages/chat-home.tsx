@@ -104,10 +104,20 @@ const ChatHome: React.FC = () => {
     }, 2000);
   };
 
-  const handleSuggestedQuestionClick = (question: string) => {
+  const handleSuggestedQuestionClick = (
+    question: string,
+    messageId: string
+  ) => {
     // 추천 질문 클릭 이벤트 추적
     clarity.setEvent("suggested_question_clicked");
     clarity.setTag("question", question);
+
+    // 해당 메시지의 추천 질문 제거
+    setMessages((prev) =>
+      prev.map((msg) =>
+        msg.id === messageId ? { ...msg, suggestedQuestions: [] } : msg
+      )
+    );
 
     const formEvent = {
       preventDefault: () => {},
@@ -151,7 +161,9 @@ const ChatHome: React.FC = () => {
                   id={message.id}
                   isNew={message.id.includes("_")}
                   suggestedQuestions={message.suggestedQuestions}
-                  onSuggestedQuestionClick={handleSuggestedQuestionClick}
+                  onSuggestedQuestionClick={(question) =>
+                    handleSuggestedQuestionClick(question, message.id)
+                  }
                 />
               )
             )}

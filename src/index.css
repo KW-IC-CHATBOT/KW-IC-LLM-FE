@@ -15,8 +15,23 @@
   }
 }
 
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
 .message-animation {
   animation: fadeIn 0.3s ease-out forwards;
+}
+
+.suggested-questions-fade-out {
+  animation: fadeOut 0.3s ease-out forwards;
 }
 
 /* 스크롤바 숨기기 */
