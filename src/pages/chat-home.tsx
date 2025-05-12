@@ -61,7 +61,7 @@ const ChatHome: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center h-[90vh] items-center bg-white relative">
+    <div className="flex justify-center h-[100vh] items-center bg-white relative">
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <img
           src="/kw.svg"
@@ -69,20 +69,24 @@ const ChatHome: React.FC = () => {
           className="w-24 h-24 sm:w-32 sm:h-32 md:w-48 md:h-48 opacity-5"
         />
       </div>
-      <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl h-full bg-white shadow-lg rounded-lg overflow-hidden flex flex-col relative z-10">
+      <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl h-full bg-white shadow-lg overflow-hidden flex flex-col relative z-10">
         {/* 헤더 */}
         <header className="bg-[#800020] text-white p-4">
           <div className="flex justify-between items-center">
-            <h1 className="text-base sm:text-lg md:text-xl font-semibold">
+            <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-do-hyeon">
               광운대학교 정보융합학부 챗봇
             </h1>
             <a
               href="https://ic.kw.ac.kr:501/main/main.php"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs sm:text-sm md:text-base bg-white text-[#800020] px-2 sm:px-3 py-1.5 sm:py-2 rounded hover:bg-gray-100 transition-colors"
+              className="hover:opacity-80 transition-opacity"
             >
-              IC
+              <img
+                src="/hol.png"
+                alt="IC 홈페이지"
+                className="h-8 w-auto sm:h-9 md:h-10 lg:h-12"
+              />
             </a>
           </div>
         </header>

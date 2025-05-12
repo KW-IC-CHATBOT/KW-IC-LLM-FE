@@ -19,6 +19,16 @@
   animation: fadeIn 0.3s ease-out forwards;
 }
 
+/* 스크롤바 숨기기 */
+.overflow-y-auto {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.overflow-y-auto::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
 :root {
   font-family:
     "Pretendard Variable",
