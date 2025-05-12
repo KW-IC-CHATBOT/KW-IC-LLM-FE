@@ -24,6 +24,15 @@ module.exports = {
       fontFamily: {
         "do-hyeon": ["Do Hyeon", "sans-serif"],
       },
+      keyframes: {
+        bounce: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-4px)" },
+        },
+      },
+      animation: {
+        bounce: "bounce 1s infinite",
+      },
     },
   },
   plugins: [],

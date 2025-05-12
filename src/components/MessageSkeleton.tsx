@@ -6,9 +6,11 @@ const MessageSkeleton: React.FC = () => {
       <div className="flex items-end gap-1">
         <div className="max-w-[80%] rounded-2xl p-3 bg-white border border-gray-200 rounded-tl-none text-gray-800 my-1">
           <div className="flex space-x-2">
-            <div className="h-3 w-3 bg-gray-200 rounded-full animate-pulse"></div>
-            <div className="h-3 w-3 bg-gray-200 rounded-full animate-pulse"></div>
-            <div className="h-3 w-3 bg-gray-200 rounded-full animate-pulse"></div>
+            <div className="h-3 w-3 bg-gray-200 rounded-full animate-[bounce_1s_infinite_0ms]"></div>
+            <div className="h-3 w-3 bg-gray-200 rounded-full animate-[bounce_1s_infinite_200ms]"></div>
+            <div className="h-3 w-3 bg-gray-200 rounded-full animate-[bounce_1s_infinite_400ms]"></div>
+            <div className="h-3 w-3 bg-gray-200 rounded-full animate-[bounce_1s_infinite_600ms]"></div>
+            <div className="h-3 w-3 bg-gray-200 rounded-full animate-[bounce_1s_infinite_800ms]"></div>
           </div>
         </div>
         <span className="text-xs text-gray-500 mb-1">
