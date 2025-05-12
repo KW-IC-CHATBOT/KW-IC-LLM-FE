@@ -6,6 +6,8 @@ interface ChatMessageProps {
   timestamp: Date;
   id: string;
   isNew?: boolean;
+  suggestedQuestions?: string[];
+  onSuggestedQuestionClick?: (question: string) => void;
 }
 
 const ChatMessage: React.FC<ChatMessageProps> = ({
@@ -13,11 +15,13 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
   content,
   timestamp,
   isNew,
+  suggestedQuestions = [],
+  onSuggestedQuestionClick,
 }) => {
   return (
     <div
-      className={`flex ${
-        role === "user" ? "justify-end" : "justify-start"
+      className={`flex flex-col ${
+        role === "user" ? "items-end" : "items-start"
       } ${isNew ? "message-animation" : ""}`}
     >
       <div className="flex items-end gap-1">
@@ -49,6 +53,19 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
           </span>
         )}
       </div>
+      {role === "assistant" && suggestedQuestions.length > 0 && (
+        <div className="mt-2 flex flex-wrap gap-2 max-w-[80%]">
+          {suggestedQuestions.map((question, index) => (
+            <button
+              key={index}
+              onClick={() => onSuggestedQuestionClick?.(question)}
+              className="text-sm px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors"
+            >
+              {question}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

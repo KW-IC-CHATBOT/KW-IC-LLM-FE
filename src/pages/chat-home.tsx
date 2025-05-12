@@ -10,6 +10,7 @@ interface Message {
   timestamp: Date;
   id: string;
   isLoading?: boolean;
+  suggestedQuestions?: string[];
 }
 
 const ChatHome: React.FC = () => {
@@ -20,6 +21,11 @@ const ChatHome: React.FC = () => {
         "안녕하세요! 광운대학교 정보융합학부 챗봇입니다. 무엇을 도와드릴까요?",
       timestamp: new Date(),
       id: "initial",
+      suggestedQuestions: [
+        "정보융합학부는 어떤 학부인가요?",
+        "전공 선택은 어떻게 하나요?",
+        "졸업 요건이 어떻게 되나요?",
+      ],
     },
   ]);
   const [input, setInput] = useState("");
@@ -40,12 +46,14 @@ const ChatHome: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim() || isLoading) return;
+    const messageContent =
+      e.type === "submit" ? input : (e as any).target?.value;
+    if (!messageContent?.trim() || isLoading) return;
 
     const userMessageId = generateMessageId();
     const newMessage: Message = {
       role: "user",
-      content: input,
+      content: messageContent,
       timestamp: new Date(),
       id: userMessageId,
     };
@@ -77,11 +85,25 @@ const ChatHome: React.FC = () => {
                 ...msg,
                 content: "죄송합니다. 아직 응답을 준비 중입니다.",
                 isLoading: false,
+                suggestedQuestions: [
+                  "다른 질문이 있으신가요?",
+                  "더 자세한 설명이 필요하신가요?",
+                  "다른 주제로 이야기해볼까요?",
+                ],
               }
             : msg
         )
       );
     }, 2000);
+  };
+
+  const handleSuggestedQuestionClick = (question: string) => {
+    const formEvent = {
+      preventDefault: () => {},
+      type: "suggested",
+      target: { value: question },
+    } as unknown as React.FormEvent;
+    handleSubmit(formEvent);
   };
 
   return (
@@ -117,6 +139,8 @@ const ChatHome: React.FC = () => {
                   timestamp={message.timestamp}
                   id={message.id}
                   isNew={message.id.includes("_")}
+                  suggestedQuestions={message.suggestedQuestions}
+                  onSuggestedQuestionClick={handleSuggestedQuestionClick}
                 />
               )
             )}
