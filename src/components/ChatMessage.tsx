@@ -45,7 +45,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
           </span>
         )}
         <div
-          className={`max-w-[80%] rounded-2xl p-3 ${
+          className={`max-w-[80%] rounded-2xl p-3 break-all whitespace-pre-line text-left ${
             role === "user"
               ? "bg-[#800020] text-white rounded-tr-none my-1"
               : "bg-white border border-gray-200 rounded-tl-none text-gray-800 my-1"

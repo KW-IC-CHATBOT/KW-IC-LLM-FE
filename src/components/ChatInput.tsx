@@ -25,14 +25,12 @@ const ChatInput: React.FC<ChatInputProps> = ({
           onChange={onInputChange}
           placeholder="메시지를 입력하세요..."
           className="flex-1 p-2 sm:p-3 border border-gray-300 rounded-full focus:outline-none focus:border-[#800020] text-gray-800 placeholder-gray-500 bg-white"
-          disabled={isLoading}
         />
         <button
           type="submit"
           className={`w-10 h-10 sm:w-12 sm:h-12 ${
             isLoading ? "bg-gray-400" : "bg-[#800020] hover:bg-[#600018]"
           } text-white rounded-full focus:outline-none flex items-center justify-center transition-colors`}
-          disabled={isLoading}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

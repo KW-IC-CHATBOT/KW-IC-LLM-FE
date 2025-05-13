@@ -6,6 +6,7 @@ class WebSocketService {
   private reconnectAttempts = 0;
   private maxReconnectAttempts = 5;
   private reconnectDelay = 2000;
+  private connectionTimeoutDuration = 10000; // 10초로 증가
   private messageQueue: string[] = [];
   private isConnecting = false;
   private reconnectTimeout: NodeJS.Timeout | null = null;
@@ -38,8 +39,16 @@ class WebSocketService {
         if (this.ws && this.ws.readyState !== WebSocket.OPEN) {
           console.log("WebSocket 연결 타임아웃");
           this.ws.close();
+          // 타임아웃 시 즉시 재연결 시도
+          if (
+            !this.isDisconnecting &&
+            this.reconnectAttempts < this.maxReconnectAttempts
+          ) {
+            this.reconnectAttempts++;
+            this.connect();
+          }
         }
-      }, 5000);
+      }, this.connectionTimeoutDuration);
 
       this.ws.onopen = () => {
         console.log("WebSocket 연결됨");

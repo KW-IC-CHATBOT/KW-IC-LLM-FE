@@ -42,7 +42,10 @@ const ChatHome: React.FC = () => {
     // WebSocket 메시지 핸들러 설정
     websocketService.onMessage((chunk) => {
       if (!isComponentMounted.current) return;
-      console.log("Received chunk:", chunk);
+      if (chunk === "[EOS]") {
+        setIsLoading(false);
+        return;
+      }
       // 중복 chunk 방지
       if (!currentResponseRef.current.endsWith(chunk)) {
         currentResponseRef.current += chunk;
