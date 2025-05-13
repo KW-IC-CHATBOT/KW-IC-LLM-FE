@@ -3,7 +3,7 @@ import Header from "../components/Header";
 import ChatMessage from "../components/ChatMessage";
 import MessageSkeleton from "../components/MessageSkeleton";
 import ChatInput from "../components/ChatInput";
-import { clarity } from "react-microsoft-clarity";
+import { websocketService } from "../services/websocket";
 
 interface Message {
   role: "user" | "assistant";
@@ -32,6 +32,79 @@ const ChatHome: React.FC = () => {
   const [input, setInput] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const currentResponseRef = useRef<string>("");
+  const currentMessageIdRef = useRef<string>("");
+  const isComponentMounted = useRef(true);
+
+  useEffect(() => {
+    isComponentMounted.current = true;
+
+    // WebSocket 메시지 핸들러 설정
+    websocketService.onMessage((chunk) => {
+      if (!isComponentMounted.current) return;
+      console.log("Received chunk:", chunk);
+      // 중복 chunk 방지
+      if (!currentResponseRef.current.endsWith(chunk)) {
+        currentResponseRef.current += chunk;
+      }
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === currentMessageIdRef.current
+            ? {
+                ...msg,
+                content: currentResponseRef.current,
+                isLoading: false,
+              }
+            : msg
+        )
+      );
+    });
+
+    // WebSocket 에러 핸들러 설정
+    websocketService.onError((error) => {
+      if (!isComponentMounted.current) return;
+      console.error("WebSocket error:", error);
+
+      let errorMessage = "죄송합니다. 서버와의 통신에 문제가 발생했습니다.";
+      let suggestedQuestions = [
+        "다시 시도해볼까요?",
+        "다른 질문을 해볼까요?",
+        "잠시 후 다시 시도해볼까요?",
+      ];
+
+      if (error instanceof Error) {
+        if (error.name === "InitializationError") {
+          errorMessage =
+            "서버의 데이터베이스 초기화에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.";
+          suggestedQuestions = [
+            "잠시 후 다시 시도해볼까요?",
+            "서버 상태를 확인해볼까요?",
+            "다른 질문을 해볼까요?",
+          ];
+        }
+      }
+
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === currentMessageIdRef.current
+            ? {
+                ...msg,
+                content: errorMessage,
+                isLoading: false,
+                suggestedQuestions,
+              }
+            : msg
+        )
+      );
+      setIsLoading(false);
+    });
+
+    return () => {
+      isComponentMounted.current = false;
+      // 컴포넌트 언마운트 시 WebSocket 연결을 유지
+      // websocketService.disconnect();
+    };
+  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -48,12 +121,10 @@ const ChatHome: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const messageContent =
-      e.type === "submit" ? input : (e as any).target?.value;
+      e.type === "submit"
+        ? input
+        : (e as unknown as { target?: { value: string } }).target?.value;
     if (!messageContent?.trim() || isLoading) return;
-
-    // 사용자 메시지 전송 이벤트 추적
-    clarity.setEvent("user_message_sent");
-    clarity.setTag("message_length", messageContent.length.toString());
 
     const userMessageId = generateMessageId();
     const newMessage: Message = {
@@ -69,6 +140,9 @@ const ChatHome: React.FC = () => {
 
     // 스켈레톤 메시지 추가
     const skeletonId = generateMessageId();
+    currentMessageIdRef.current = skeletonId;
+    currentResponseRef.current = "";
+
     setMessages((prev) => [
       ...prev,
       {
@@ -80,38 +154,14 @@ const ChatHome: React.FC = () => {
       },
     ]);
 
-    // 실제 응답을 받는 부분 (현재는 타임아웃으로 대체)
-    setTimeout(() => {
-      setIsLoading(false);
-      setMessages((prev) =>
-        prev.map((msg) =>
-          msg.id === skeletonId
-            ? {
-                ...msg,
-                content: "죄송합니다. 아직 응답을 준비 중입니다.",
-                isLoading: false,
-                suggestedQuestions: [
-                  "다른 질문이 있으신가요?",
-                  "더 자세한 설명이 필요하신가요?",
-                  "다른 주제로 이야기해볼까요?",
-                ],
-              }
-            : msg
-        )
-      );
-      // 챗봇 응답 이벤트 추적
-      clarity.setEvent("bot_response_received");
-    }, 2000);
+    // WebSocket을 통해 메시지 전송
+    websocketService.sendMessage(messageContent);
   };
 
   const handleSuggestedQuestionClick = (
     question: string,
     messageId: string
   ) => {
-    // 추천 질문 클릭 이벤트 추적
-    clarity.setEvent("suggested_question_clicked");
-    clarity.setTag("question", question);
-
     // 해당 메시지의 추천 질문 제거
     setMessages((prev) =>
       prev.map((msg) =>
