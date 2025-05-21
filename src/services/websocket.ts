@@ -238,7 +238,7 @@ class WebSocketService {
 }
 
 // 환경 변수에서 WebSocket URL 가져오기
-const wsUrl = import.meta.env.VITE_WS_URL || "ws://kw-ic-chat.k-net.kr/api/ws";
+const wsUrl = import.meta.env.VITE_WS_URL || "wss://kw-ic-chat.k-net.kr/api/ws";
 
 // WebSocket 서비스 인스턴스 생성
 export const websocketService = new WebSocketService(wsUrl);
