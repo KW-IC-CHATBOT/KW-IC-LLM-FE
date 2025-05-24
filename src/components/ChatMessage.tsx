@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ReactMarkdown from "react-markdown";
 
 interface ChatMessageProps {
   role: "user" | "assistant";
@@ -51,7 +52,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
               : "bg-white border border-gray-200 rounded-tl-none text-gray-800 my-1"
           }`}
         >
-          {content}
+          <ReactMarkdown>{content}</ReactMarkdown>
         </div>
         {role === "assistant" && (
           <span className="text-xs text-gray-500 mb-1">
