@@ -2,7 +2,7 @@
 
 ## 📌 프로젝트 개요
 
-안녕하세요. 저희는 **광운대학교 정보융합학부** 학생들을 위한 챗봇 서비스를 개발한  KW-VIP-LLM 팀입니다.
+안녕하세요. 저희는 **광운대학교 정보융합학부** 학생들을 위한 챗봇 서비스를 개발한 KW-VIP-LLM 팀입니다.
 
 본 프로젝트는 **자율전공 학생들이 정보융합학부에 대한 정보를 쉽고 직관적으로 접할 수 있도록** 돕는 것을 목표로 하며,  
 단순한 정보 전달을 넘어 **진로 탐색과 학과 선택에 실질적인 도움을 주는 지능형 서비스** 구현을 지향합니다.
@@ -24,9 +24,11 @@
 본 시스템은 총 3가지 주요 구성 요소로 이루어져 있습니다.
 
 1. **접속 경로**
+
    - QR 코드 또는 웹사이트를 통해 챗봇 인터페이스에 접근 가능
 
 2. **질문 처리**
+
    - 사용자의 질문은 **Gemini API**를 통해 자연어 처리
    - 답변 생성 시 문맥을 이해하여 더 자연스럽고 풍부한 정보 제공
 
@@ -74,4 +76,76 @@
 
 ## 👥 팀 정보
 
-- 광운대학교 정보융합학부 챗봇 개발팀 (KW-VIP-LLM)  IDEA
+- 광운대학교 정보융합학부 챗봇 개발팀 (KW-VIP-LLM) IDEA
+
+---
+
+## 실행 방법
+
+### 직접 실행
+
+1. docker-compose.yml에서 포트 수정
+
+   ```docker-compose.yml
+   version: "3.8"
+
+   services:
+     frontend:
+       build:
+         context: .
+         dockerfile: Dockerfile
+       ports:
+         - "{원하는포트}:80"
+       volumes:
+         - ./nginx.conf:/etc/nginx/conf.d/default.conf
+       restart: unless-stopped
+   ```
+
+1. `docker compose up -d` 입력
+
+### jenkins
+
+배포 포트 변경 어려움.
+
+github credential 설정 후 진행 필요.
+
+예시 pipeline
+
+    ```JenkinsPipeline
+    pipeline {
+        agent any
+
+
+        stages {
+            stage('Checkout') {
+                steps {
+                    git branch: "main",
+                    credentialsId: "{github credential}",
+                    url: "https://github.com/KW-IC-CHATBOT/KW-IC-LLM-FE.git"
+                }
+            }
+
+
+            stage('Build and Deploy') {
+                steps {
+                    script {
+                        sh '''
+                            docker compose down --remove-orphans
+
+                            docker rm -f be || true
+
+                            docker compose build
+                            docker compose up -d
+                        '''
+                    }
+                }
+            }
+        }
+
+        post {
+            failure {
+                sh 'docker compose down'
+            }
+        }
+    }
+    ```
