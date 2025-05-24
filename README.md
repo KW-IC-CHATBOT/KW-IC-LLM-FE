@@ -107,8 +107,6 @@
 
 배포 포트 변경 어려움.
 
-github credential 설정 후 진행 필요.
-
 예시 pipeline
 
     ```JenkinsPipeline
@@ -120,7 +118,6 @@ github credential 설정 후 진행 필요.
             stage('Checkout') {
                 steps {
                     git branch: "main",
-                    credentialsId: "{github credential}",
                     url: "https://github.com/KW-IC-CHATBOT/KW-IC-LLM-FE.git"
                 }
             }
