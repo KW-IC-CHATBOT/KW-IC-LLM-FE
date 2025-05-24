@@ -129,8 +129,6 @@
                         sh '''
                             docker compose down --remove-orphans
 
-                            docker rm -f be || true
-
                             docker compose build
                             docker compose up -d
                         '''
